@@ -27,7 +27,11 @@ import {
   QSeparator,
   QForm,
   QInput,
-  Ripple
+  QSpace,
+  QChip,
+  QMenu,
+  Ripple,
+  ClosePopup
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -53,10 +57,14 @@ Vue.use(Quasar, {
     QCardActions,
     QSeparator,
     QForm,
-    QInput
+    QInput,
+    QSpace,
+    QChip,
+    QMenu
   },
   directives: {
-    Ripple
+    Ripple,
+    ClosePopup
   },
   plugins: {
   }
