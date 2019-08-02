@@ -1,0 +1,110 @@
+version: '3'
+
+services:
+  influxdb:
+    image: influxdb
+    hostname: influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+
+  mongodb:
+    image: mongo
+    hostname: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DATABASE_NAME}
+    ports: 
+      - "27017:27017"
+    volumes: 
+      - mongodb-data:/data/db
+      - ${PWD}/mongodb-init.js:/docker-entrypoint-initdb.d/mongodb-init.js:ro
+
+  emqx:
+    image: emqx/emqx
+    hostname: emqx
+    environment: 
+      EMQX_ALLOW_ANONYMOUS: "false"
+      EMQX_LOADED_PLUGINS: "emqx_recon,emqx_retainer,emqx_management,emqx_dashboard,emqx_auth_mongo"
+      EMQX_AUTH__CLIENT__PASSWORD_HASH: "sha256"
+      EMQX_AUTH__MONGO__TYPE: "single"
+      EMQX_AUTH__MONGO__SERVER: "mongodb:27017"
+      EMQX_AUTH__MONGO__LOGIN: ${MONGODB_ROOT_USERNAME}
+      EMQX_AUTH__MONGO__PASSWORD: ${MONGODB_ROOT_PASSWORD}
+      EMQX_AUTH__MONGO__AUTH_SOURCE: "admin"
+      EMQX_AUTH__MONGO__DATABASE: ${DATABASE_NAME}
+      EMQX_AUTH__MONGO__AUTH_QUERY__COLLECTION: "users"
+      EMQX_AUTH__MONGO__AUTH_QUERY__PASSWORD_FIELD: "password"
+      EMQX_AUTH__MONGO__AUTH_QUERY__PASSWORD_HASH: "bcrypt"
+      EMQX_AUTH__MONGO__AUTH_QUERY__SELECTOR: "username=%u"
+      EMQX_AUTH__MONGO__SUPER_QUERY: "off"
+      EMQX_AUTH__MONGO__ACL_QUERY: "on"
+      EMQX_AUTH__MONGO__ACL_QUERY__COLLECTION: "acl"
+      EMQX_AUTH__MONGO__ACL_QUERY__SELECTOR: "username=%u"
+    ports:
+      - "18083:18083"
+      - "1883:1883"
+
+  telegraf:
+    image: telegraf
+    hostname: telegraf
+    links: 
+      - influxdb
+      - emqx
+    volumes: 
+      - ${PWD}/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+
+  chronograf:
+    image: chronograf
+    hostname: chronograf
+    ports: 
+      - "8888:8888"
+    links: 
+      - influxdb
+    volumes: 
+      - chronograf-data:/var/lib/chronograf
+
+  fabbrica-server:
+    build: ./fabbrica-server
+    image: fabbrica-server
+    volumes: 
+      - ${PWD}/fabbrica-server/build/libs:/fabbrica-server
+    command: >
+              java -jar fabbrica-server-0.0.1-SNAPSHOT.jar 
+              --spring.data.mongodb.username=${MONGODB_ROOT_USERNAME}
+              --spring.data.mongodb.host=mongodb
+              --spring.data.mongodb.port=27017
+              --spring.data.mongodb.database=${DATABASE_NAME}
+              --spring.data.mongodb.authentication-database=admin
+              --spring.data.mongodb.password=${MONGODB_ROOT_PASSWORD}
+              --oauth.client.id=${OAUTH_CLIENT_ID}
+              --oauth.client.secret=${OAUTH_CLIENT_SECRET}
+
+  fabbrica-ui:
+    build: ./fabbrica-ui
+    image: fabbrica-ui
+    volumes: 
+      - ${PWD}/fabbrica-ui:/fabbrica-ui
+    stdin_open: true
+    tty: true
+    command: "npm run serve"
+
+  nginx:
+    image: nginx
+    volumes: 
+      - ${PWD}/nginx.conf:/etc/nginx/nginx.conf
+    depends_on: 
+      - fabbrica-server
+      - fabbrica-ui
+    links: 
+      - fabbrica-server
+      - fabbrica-ui
+    ports: 
+      - "8080:8080"
+
+volumes:
+  influxdb-data:
+  mongodb-data:
+  chronograf-data:
