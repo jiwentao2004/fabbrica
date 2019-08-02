@@ -5,7 +5,7 @@ import 'quasar/dist/quasar.ie.polyfills'
 import '@quasar/extras/roboto-font/roboto-font.css'
 import '@quasar/extras/material-icons/material-icons.css'
 import {
-  Quasar, 
+  Quasar,
   QLayout,
   QHeader,
   QDrawer,
@@ -19,7 +19,15 @@ import {
   QItem,
   QItemSection,
   QItemLabel,
-  QAvatar
+  QAvatar,
+  QScrollArea,
+  QCard,
+  QCardSection,
+  QCardActions,
+  QSeparator,
+  QForm,
+  QInput,
+  Ripple
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -38,10 +46,18 @@ Vue.use(Quasar, {
     QItem,
     QItemSection,
     QItemLabel,
-    QAvatar
+    QAvatar,
+    QScrollArea,
+    QCard,
+    QCardSection,
+    QCardActions,
+    QSeparator,
+    QForm,
+    QInput
   },
   directives: {
+    Ripple
   },
   plugins: {
   }
- })
+})
