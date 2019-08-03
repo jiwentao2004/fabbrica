@@ -33,7 +33,8 @@ export default {
             repository: new Repository("factories", this.$http),
             columns: [
                 { name: "code", label: "Factory Code", sortable: true },
-                { name: "name", label: "Factory Name", sortable: true }
+                { name: "name", label: "Factory Name", sortable: true },
+                { name: "tenant.name", label: "Tenant", sortable: true }
             ]
         };
     },

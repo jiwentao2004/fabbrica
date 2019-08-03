@@ -31,7 +31,40 @@
                 :disable="!edit"
               />
             </div>
-            <div class="col-md-4 col-sm-6"></div>
+            <div class="col-md-4 col-sm-6">
+              <q-select
+                outlined
+                clearable
+                v-model="data.tenant"
+                use-input
+                hide-selected
+                fill-input
+                input-debounce="0"
+                label="Tenant"
+                :options="tenantOptions"
+                option-label="name"
+                option-value="id"
+                emit-value
+                map-options
+                @filter="tenantFilter"
+                @input="tenantInput"
+                :disable="!edit"
+              >
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                    <q-item-section>
+                      <q-item-label caption>{{scope.opt.code}}</q-item-label>
+                      <q-item-label>{{ scope.opt.name }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">No Tenants</q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </div>
           </div>
         </q-card>
       </div>
@@ -46,12 +79,15 @@ export default {
         return {
             data: {
                 name: "",
-                code: ""
+                code: "",
+                tenant: {}
             },
+            tenantOptions: [],
             dataCopy: undefined,
             edit: false,
             loading: false,
-            repository: new Repository("factories", this.$http)
+            repository: new Repository("factories", this.$http),
+            tenantRepository: new Repository("tenants", this.$http)
         };
     },
     beforeMount() {
@@ -95,6 +131,28 @@ export default {
         enableEdit() {
             this.edit = true;
             this.dataCopy = Object.assign({}, this.data);
+        },
+        tenantFilter(val, update, abort) {
+            let filter = "";
+            if (val) {
+                filter = "name,like," + val + ";";
+            }
+            this.tenantRepository
+                .getData(filter, 0, 20, "+name")
+                .then(response => {
+                    update(() => {
+                        this.tenantOptions = response.data;
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                    abort();
+                });
+        },
+        tenantInput(value) {
+            this.data.tenant = this.tenantOptions.filter(tenant => {
+                return value == tenant.id;
+            })[0];
         }
     }
 };
