@@ -15,7 +15,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'page',
+      name: 'home',
       component: Page,
       meta: {
         requiresAuth: true,

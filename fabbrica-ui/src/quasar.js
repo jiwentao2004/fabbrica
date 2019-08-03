@@ -30,6 +30,11 @@ import {
   QSpace,
   QChip,
   QMenu,
+  QBreadcrumbs,
+  QBreadcrumbsEl,
+  QMarkupTable,
+  QPagination,
+  QSelect,
   Ripple,
   ClosePopup
 } from 'quasar'
@@ -60,7 +65,12 @@ Vue.use(Quasar, {
     QInput,
     QSpace,
     QChip,
-    QMenu
+    QMenu,
+    QBreadcrumbs,
+    QBreadcrumbsEl,
+    QMarkupTable,
+    QPagination,
+    QSelect
   },
   directives: {
     Ripple,
