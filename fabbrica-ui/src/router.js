@@ -6,7 +6,7 @@ import Login from './views/auth/Login.vue'
 import Tenant from './views/page/Tenant.vue'
 import TenantForm from './views/page/TenantForm.vue'
 import Factory from './views/page/Factory.vue'
-import NewFactory from './views/page/NewFactory.vue'
+import FactoryForm from './views/page/FactoryForm.vue'
 import store from './store'
 
 
@@ -30,9 +30,9 @@ const router = new Router({
           component: Factory
         },
         {
-          path: 'factories/new',
-          name: 'newFactory',
-          component: NewFactory
+          path: 'factories/:id',
+          name: 'factory-form',
+          component: FactoryForm
         },
         {
           path: 'tenants',
