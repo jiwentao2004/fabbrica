@@ -5,6 +5,8 @@ import Auth from './views/Auth.vue'
 import Login from './views/auth/Login.vue'
 import Tenant from './views/page/Tenant.vue'
 import NewTenant from './views/page/NewTenant.vue'
+import Factory from './views/page/Factory.vue'
+import NewFactory from './views/page/NewFactory.vue'
 import store from './store'
 
 
@@ -22,6 +24,16 @@ const router = new Router({
         requiresAuth: true,
       },
       children: [
+        {
+          path: 'factories',
+          name: 'factories',
+          component: Factory
+        },
+        {
+          path: 'factories/new',
+          name: 'newFactory',
+          component: NewFactory
+        },
         {
           path: 'tenants',
           name: 'tenants',

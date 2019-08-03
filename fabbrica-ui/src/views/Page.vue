@@ -34,6 +34,12 @@
     <q-drawer v-model="left" side="left" bordered :width="200">
       <q-scroll-area class="fit">
         <q-list>
+          <q-item clickable active v-ripple :to="{ name: 'factories' }">
+            <q-item-section avatar>
+              <q-icon name="domain" />
+            </q-item-section>
+            <q-item-section>Factories</q-item-section>
+          </q-item>
           <q-item clickable active v-ripple :to="{ name: 'tenants' }">
             <q-item-section avatar>
               <q-icon name="location_city" />
