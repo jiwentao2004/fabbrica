@@ -6,10 +6,19 @@
         <q-breadcrumbs-el label="Tenants" icon="location_city" to="/tenants" />
       </q-breadcrumbs>
       <q-space />
-      <q-btn unelevated color="light-blue-6" :to="{ name: 'newTenant' }">New</q-btn>
+      <q-btn
+        unelevated
+        color="light-blue-6"
+        :to="{ name: 'tenant-form', params: { id: 'new' } }"
+      >New</q-btn>
     </q-toolbar>
     <div class="row q-pa-md flex">
-      <filter-list class="full-width full-height" :repository="repository" :columns="columns" />
+      <filter-list
+        class="full-width full-height"
+        :repository="repository"
+        :columns="columns"
+        :rowClick="rowClick"
+      />
     </div>
   </q-page>
 </template>
@@ -30,6 +39,11 @@ export default {
     },
     components: {
         "filter-list": FilterList
+    },
+    methods: {
+        rowClick(id) {
+            this.$router.push({ name: "tenant-form", params: { id: id } });
+        }
     }
 };
 </script>

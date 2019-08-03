@@ -4,7 +4,7 @@ import Page from './views/Page.vue'
 import Auth from './views/Auth.vue'
 import Login from './views/auth/Login.vue'
 import Tenant from './views/page/Tenant.vue'
-import NewTenant from './views/page/NewTenant.vue'
+import TenantForm from './views/page/TenantForm.vue'
 import Factory from './views/page/Factory.vue'
 import NewFactory from './views/page/NewFactory.vue'
 import store from './store'
@@ -40,9 +40,9 @@ const router = new Router({
           component: Tenant
         },
         {
-          path: 'tenants/new',
-          name: 'newTenant',
-          component: NewTenant
+          path: 'tenants/:id',
+          name: 'tenant-form',
+          component: TenantForm
         }
       ]
     },

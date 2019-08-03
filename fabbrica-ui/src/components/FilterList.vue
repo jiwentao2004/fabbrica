@@ -47,7 +47,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(row,index) in data" :key="index">
+        <tr v-for="(row,index) in data" :key="index" @click="rowClick(row.id)">
           <td class="text-left" v-for="column in columns" :key="column.name">{{ row[column.name] }}</td>
         </tr>
       </tbody>
@@ -84,7 +84,7 @@ export const FilterConditions = {
 };
 
 export default {
-    props: ["repository", "columns"],
+    props: ["repository", "columns", "rowClick"],
     data() {
         return {
             data: [],
