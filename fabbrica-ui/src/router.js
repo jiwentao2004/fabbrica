@@ -4,6 +4,7 @@ import Page from './views/Page.vue'
 import Auth from './views/Auth.vue'
 import Login from './views/auth/Login.vue'
 import Tenant from './views/page/Tenant.vue'
+import NewTenant from './views/page/NewTenant.vue'
 import store from './store'
 
 
@@ -25,6 +26,11 @@ const router = new Router({
           path: 'tenants',
           name: 'tenants',
           component: Tenant
+        },
+        {
+          path: 'tenants/new',
+          name: 'newTenant',
+          component: NewTenant
         }
       ]
     },

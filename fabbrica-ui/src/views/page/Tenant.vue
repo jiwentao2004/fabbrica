@@ -6,7 +6,7 @@
         <q-breadcrumbs-el label="Tenants" icon="location_city" to="/tenants" />
       </q-breadcrumbs>
       <q-space />
-      <q-btn unelevated color="light-blue-6">New</q-btn>
+      <q-btn unelevated color="light-blue-6" :to="{ name: 'newTenant' }">New</q-btn>
     </q-toolbar>
     <div class="row q-pa-md flex">
       <filter-list class="full-width full-height" :repository="repository" :columns="columns" />

@@ -10,4 +10,8 @@ export default class Repository {
     getData(filters, page, size, sort) {
         return this.httpClient.get(this.url, { params: { filters: filters, page: page, size: size, sort: sort } });
     }
+
+    save(document) {
+        return this.httpClient.post(this.url, document);
+    }
 }

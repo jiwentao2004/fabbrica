@@ -36,7 +36,8 @@ import {
   QPagination,
   QSelect,
   Ripple,
-  ClosePopup
+  ClosePopup,
+  Loading
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -77,5 +78,6 @@ Vue.use(Quasar, {
     ClosePopup
   },
   plugins: {
+    Loading
   }
 })
