@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class QueryBuilder {
     public static Query buildQuery(String filters, Pageable pageable) {

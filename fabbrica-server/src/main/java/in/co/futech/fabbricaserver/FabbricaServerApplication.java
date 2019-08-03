@@ -17,28 +17,29 @@ import in.co.futech.fabbricaserver.repository.UserRepository;
 @SpringBootApplication
 public class FabbricaServerApplication implements CommandLineRunner {
 
-	public static final Logger logger = LoggerFactory.getLogger(FabbricaServerApplication.class);
+    public static final Logger logger = LoggerFactory.getLogger(FabbricaServerApplication.class);
 
     private final UserRepository userRepository;
 
-	private final PasswordEncoder passwordEncoder;
-	
-	@Autowired
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
     public FabbricaServerApplication(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-	public static void main(String[] args) {
-		SpringApplication.run(FabbricaServerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(FabbricaServerApplication.class, args);
+    }
 
-	@Override
+    @Override
     public void run(String... args) throws Exception {
-		logger.info("Inside Run");
+        logger.info("Inside Run");
         if (!this.userRepository.findByUsername("administrator").isPresent()) {
-			logger.info("Inside Run Id");
-            User user = new User("Administrator", "administrator", passwordEncoder.encode("Bbs199509"), Collections.singletonList(Role.ADMIN));
+            logger.info("Inside Run Id");
+            User user = new User("Administrator", "administrator", passwordEncoder.encode("Bbs199509"),
+                    Collections.singletonList(Role.ADMIN));
             this.userRepository.save(user);
         }
     }

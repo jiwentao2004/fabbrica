@@ -8,10 +8,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Machine extends AbstractDocument {
 
     @Indexed(unique = true)
+    private String code;
+
     private String name;
 
     @DBRef
     private MachineModel machineModel;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getName() {
         return name;

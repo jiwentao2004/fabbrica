@@ -1,5 +1,7 @@
 package in.co.futech.fabbricaserver.controller;
 
+import in.co.futech.fabbricaserver.model.MachineModel;
+import in.co.futech.fabbricaserver.repository.MachineModelRepository;
 import in.co.futech.fabbricaserver.util.QueryBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,60 +15,58 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import in.co.futech.fabbricaserver.model.Factory;
-import in.co.futech.fabbricaserver.repository.FactoryRepository;
-
 import java.util.List;
 
 @RepositoryRestController
-@RequestMapping(path = "/factories")
-public class FactoryController {
+@RequestMapping(path = "/machineModels")
+public class MachineModelController {
 
-    private FactoryRepository factoryRepository;
+    private MachineModelRepository machineModelRepository;
     private MongoTemplate mongoTemplate;
 
-    public FactoryController(FactoryRepository factoryRepository, MongoTemplate mongoTemplate) {
-        this.factoryRepository = factoryRepository;
+    public MachineModelController(MachineModelRepository machineModelRepository, MongoTemplate mongoTemplate) {
+        this.machineModelRepository = machineModelRepository;
         this.mongoTemplate = mongoTemplate;
     }
 
     @Secured({ "ADMIN" })
     @PostMapping()
-    public @ResponseBody Factory addFactory(@RequestBody Factory factory) {
-        return factoryRepository.save(factory);
+    public @ResponseBody MachineModel addMachineModel(@RequestBody MachineModel machineModel) {
+        return machineModelRepository.save(machineModel);
     }
 
     @Secured({ "ADMIN" })
     @PutMapping("/{id}")
-    public ResponseEntity<Factory> saveFactory(@PathVariable String id, @RequestBody Factory factory) {
-        if (factoryRepository.existsById(id)) {
-            factoryRepository.save(factory);
-            return new ResponseEntity<>(factory, HttpStatus.OK);
+    public ResponseEntity<MachineModel> saveMachineModel(@PathVariable String id, @RequestBody MachineModel machineModel) {
+        if (machineModelRepository.existsById(id)) {
+            machineModelRepository.save(machineModel);
+            return new ResponseEntity<>(machineModel, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping()
-    public ResponseEntity<List<Factory>> getFactories(@RequestParam String filters, @RequestParam Integer page,
+    public ResponseEntity<List<MachineModel>> getMachineModels(@RequestParam String filters, @RequestParam Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "20") Integer size,
             @RequestParam String sort) {
         Pageable pageable = QueryBuilder.buildPageable(page, size, sort);
         Query query = QueryBuilder.buildQuery(filters, pageable);
-        List<Factory> factories = this.mongoTemplate.find(query, Factory.class);
-        Page<Factory> pages = PageableExecutionUtils.getPage(factories, pageable,
-                () -> mongoTemplate.count(query, Factory.class));
+        List<MachineModel> machineModels = this.mongoTemplate.find(query, MachineModel.class);
+        Page<MachineModel> pages = PageableExecutionUtils.getPage(machineModels, pageable,
+                () -> mongoTemplate.count(query, MachineModel.class));
         if (page > pages.getTotalPages()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set("X-Total-Count", pages.getTotalElements() + "");
-            return new ResponseEntity<List<Factory>>(pages.getContent(), responseHeaders, HttpStatus.OK);
+            return new ResponseEntity<List<MachineModel>>(pages.getContent(), responseHeaders, HttpStatus.OK);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Factory> getFactory(@PathVariable String id) {
-        return factoryRepository.findById(id).map(factory -> new ResponseEntity<>(factory, HttpStatus.OK))
+    public ResponseEntity<MachineModel> getMachineModel(@PathVariable String id) {
+        return machineModelRepository.findById(id)
+                .map(machineModel -> new ResponseEntity<>(machineModel, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

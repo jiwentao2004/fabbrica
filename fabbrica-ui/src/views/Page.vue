@@ -34,6 +34,18 @@
     <q-drawer v-model="left" side="left" bordered :width="200">
       <q-scroll-area class="fit">
         <q-list>
+          <q-item clickable active v-ripple :to="{ name: 'machines' }">
+            <q-item-section avatar>
+              <q-icon name="fas fa-cog" />
+            </q-item-section>
+            <q-item-section>Machines</q-item-section>
+          </q-item>
+          <q-item clickable active v-ripple :to="{ name: 'machine-models' }">
+            <q-item-section avatar>
+              <q-icon name="fas fa-cogs" />
+            </q-item-section>
+            <q-item-section>Machine Models</q-item-section>
+          </q-item>
           <q-item clickable active v-ripple :to="{ name: 'factories' }">
             <q-item-section avatar>
               <q-icon name="domain" />

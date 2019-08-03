@@ -7,6 +7,10 @@ import Tenant from './views/page/Tenant.vue'
 import TenantForm from './views/page/TenantForm.vue'
 import Factory from './views/page/Factory.vue'
 import FactoryForm from './views/page/FactoryForm.vue'
+import MachineModel from './views/page/MachineModel.vue'
+import MachineModelForm from './views/page/MachineModelForm.vue'
+import Machine from './views/page/Machine.vue'
+import MachineForm from './views/page/MachineForm.vue'
 import store from './store'
 
 
@@ -24,6 +28,26 @@ const router = new Router({
         requiresAuth: true,
       },
       children: [
+        {
+          path: 'machines',
+          name: 'machines',
+          component: Machine
+        },
+        {
+          path: 'machines/:id',
+          name: 'machine-form',
+          component: MachineForm
+        },
+        {
+          path: 'machine-models',
+          name: 'machine-models',
+          component: MachineModel
+        },
+        {
+          path: 'machine-models/:id',
+          name: 'machine-model-form',
+          component: MachineModelForm
+        },
         {
           path: 'factories',
           name: 'factories',
