@@ -8,11 +8,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Acl extends AbstractDocument {
 
     private String username;
-    private String cliendid;
+    private String clientid;
     private List<String> publish;
     private List<String> subscribe;
     private List<String> pubsub;
-    
+
+    public Acl(String username, String clientid, List<String> publish, List<String> subscribe, List<String> pubsub) {
+        this.username = username;
+        this.clientid = clientid;
+        this.publish = publish;
+        this.subscribe = subscribe;
+        this.pubsub = pubsub;
+    }
+
     public String getUsername() {
         return this.username;
     }
@@ -21,12 +29,12 @@ public class Acl extends AbstractDocument {
         this.username = username;
     }
 
-    public String getCliendid() {
-        return this.cliendid;
+    public String getClientid() {
+        return clientid;
     }
 
-    public void setCliendid(String cliendid) {
-        this.cliendid = cliendid;
+    public void setClientid(String clientid) {
+        this.clientid = clientid;
     }
 
     public List<String> getPublish() {

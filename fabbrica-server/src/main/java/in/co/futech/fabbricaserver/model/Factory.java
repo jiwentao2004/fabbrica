@@ -23,7 +23,7 @@ public class Factory extends AbstractDocument {
     @NotNull
     private Tenant tenant;
 
-    private List<Address> addresses;
+    private Address address;
 
     @DBRef
     private List<Machine> machines;
@@ -36,12 +36,12 @@ public class Factory extends AbstractDocument {
         this.code = code;
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public List<Machine> getMachines() {

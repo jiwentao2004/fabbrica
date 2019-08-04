@@ -20,6 +20,10 @@ export default class Repository {
         }
     }
 
+    remove(id) {
+        return this.httpClient.delete(this.url + "/" + id);
+    }
+
     get(id) {
         return this.httpClient.get(this.url + "/" + id);
     }

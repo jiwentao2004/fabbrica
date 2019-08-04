@@ -1,6 +1,7 @@
 package in.co.futech.fabbricaserver.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -27,6 +28,9 @@ public class User extends AbstractDocument implements Serializable {
     private boolean isCredentialsNonExpired;
 
     private boolean isEnabled;
+
+    @DBRef
+    private List<Tenant> tenants;
 
     public User() {
 
@@ -105,5 +109,13 @@ public class User extends AbstractDocument implements Serializable {
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    public List<Tenant> getTenants() {
+        return tenants;
+    }
+
+    public void setTenants(List<Tenant> tenants) {
+        this.tenants = tenants;
     }
 }

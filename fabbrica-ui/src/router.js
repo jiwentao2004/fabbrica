@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Page from './views/Page.vue'
 import Auth from './views/Auth.vue'
 import Login from './views/auth/Login.vue'
+import User from './views/page/User.vue'
+import UserForm from './views/page/UserForm.vue'
 import Tenant from './views/page/Tenant.vue'
 import TenantForm from './views/page/TenantForm.vue'
 import Factory from './views/page/Factory.vue'
@@ -67,6 +69,16 @@ const router = new Router({
           path: 'tenants/:id',
           name: 'tenant-form',
           component: TenantForm
+        },
+        {
+          path: 'users',
+          name: 'users',
+          component: User
+        },
+        {
+          path: 'users/:id',
+          name: 'user-form',
+          component: UserForm
         }
       ]
     },

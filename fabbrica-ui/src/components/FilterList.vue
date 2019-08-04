@@ -154,7 +154,6 @@ export default {
         loadData(newData, newTotal) {
             this.data = newData;
             this.totalRows = newTotal;
-            this.totalRows = 50;
         },
         pageChanged() {
             this.updateData();

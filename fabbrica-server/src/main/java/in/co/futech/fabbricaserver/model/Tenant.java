@@ -22,7 +22,7 @@ public class Tenant extends AbstractDocument {
     @NotBlank
     @Indexed
     private String name;
-    private List<Address> addresses;
+    private Address address;
 
     public String getCode() {
         return code;
@@ -40,12 +40,11 @@ public class Tenant extends AbstractDocument {
         this.name = name;
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
+    public void setAddress(Address address) {
+        this.address = address;
     }
-
 }

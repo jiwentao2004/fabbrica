@@ -9,8 +9,11 @@ public class Machine extends AbstractDocument {
 
     @Indexed(unique = true)
     private String code;
-
+    @Indexed(unique = true)
+    private String clientid;
     private String name;
+    @DBRef
+    private Factory factory;
 
     @DBRef
     private MachineModel machineModel;
@@ -21,6 +24,14 @@ public class Machine extends AbstractDocument {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getClientid() {
+        return clientid;
+    }
+
+    public void setClientid(String clientid) {
+        this.clientid = clientid;
     }
 
     public String getName() {
@@ -37,5 +48,13 @@ public class Machine extends AbstractDocument {
 
     public void setMachineModel(MachineModel machineModel) {
         this.machineModel = machineModel;
+    }
+
+    public Factory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(Factory factory) {
+        this.factory = factory;
     }
 }

@@ -58,6 +58,12 @@
             </q-item-section>
             <q-item-section>Tenants</q-item-section>
           </q-item>
+          <q-item clickable active v-ripple :to="{ name: 'users' }">
+            <q-item-section avatar>
+              <q-icon name="people" />
+            </q-item-section>
+            <q-item-section>Users</q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>

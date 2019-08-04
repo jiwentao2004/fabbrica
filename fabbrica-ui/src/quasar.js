@@ -38,7 +38,8 @@ import {
   QSelect,
   Ripple,
   ClosePopup,
-  Loading
+  Loading,
+  Notify
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -79,6 +80,7 @@ Vue.use(Quasar, {
     ClosePopup
   },
   plugins: {
-    Loading
+    Loading,
+    Notify
   }
 })
