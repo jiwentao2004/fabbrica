@@ -2,6 +2,8 @@ package in.co.futech.fabbricaserver;
 
 import java.util.Collections;
 
+import in.co.futech.fabbricaserver.model.Acl;
+import in.co.futech.fabbricaserver.repository.AclRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,14 @@ public class FabbricaServerApplication implements CommandLineRunner {
 
     private final UserRepository userRepository;
 
+    private final AclRepository aclRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public FabbricaServerApplication(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public FabbricaServerApplication(UserRepository userRepository, AclRepository aclRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.aclRepository = aclRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -41,6 +46,15 @@ public class FabbricaServerApplication implements CommandLineRunner {
             User user = new User("Administrator", "administrator", passwordEncoder.encode("Bbs199509"),
                     Collections.singletonList(Role.ADMIN));
             this.userRepository.save(user);
+        }
+        if (!this.userRepository.findByUsername("telegraf").isPresent()) {
+            User user = new User("Telegraf", "telegraf", passwordEncoder.encode("telegraf"),
+                    Collections.singletonList(Role.ADMIN));
+            this.userRepository.save(user);
+        }
+        if (!this.aclRepository.existsByUsernameAndClientid("telegraf", "telegraf")){
+            Acl acl = new Acl("telegraf", "telegraf", null, null, Collections.singletonList("#"));
+            this.aclRepository.save(acl);
         }
     }
 

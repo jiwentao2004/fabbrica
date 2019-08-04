@@ -20,7 +20,6 @@ services:
       - "27017:27017"
     volumes: 
       - mongodb-data:/data/db
-      - ${PWD}/mongodb-init.js:/docker-entrypoint-initdb.d/mongodb-init.js:ro
 
   emqx:
     image: emqx/emqx
