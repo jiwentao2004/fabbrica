@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface MachineRepository extends PagingAndSortingRepository<Machine, String> {
     Optional<Machine> findByCode(String code);
+    Optional<Machine> findByClientid(String clientid);
 }

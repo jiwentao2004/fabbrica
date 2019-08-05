@@ -35,7 +35,67 @@
                 :disable="!edit"
               />
             </div>
-            <div class="col-md-4 col-sm-6"></div>
+            <div class="col-md-4 col-sm-6">
+              <q-input
+                outlined
+                v-model="measurement"
+                label="Measurement"
+                class="q-mb-sm"
+                v-show="edit"
+                :disable="!edit"
+              >
+                <template v-slot:append>
+                  <q-btn flat outlined icon="add" @click="addMeasurement" class="cursor-pointer" />
+                </template>
+              </q-input>
+              <q-slider
+                v-model="frequency"
+                :label-value="frequency + ' ms'"
+                :min="0"
+                :max="10000"
+                :step="10"
+                snap
+                label
+                label-always
+                v-show="edit"
+                color="light-blue-6"
+              />
+              <q-list
+                bordered
+                separator
+                v-if="data.measurements && data.measurements.length > 0"
+                class="rounded-borders"
+                v-model="rerender"
+              >
+                <q-item
+                  v-for="(measurement, index) in data.measurements"
+                  :key="index"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-avatar color="primary" text-color="white">{{ measurement.name.charAt(0) }}</q-avatar>
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label>{{ measurement.name }}</q-item-label>
+                    <q-item-label caption lines="1">{{ measurement.frequency }}</q-item-label>
+                  </q-item-section>
+
+                  <q-item-section side>
+                    <q-btn
+                      flat
+                      outlined
+                      icon="close"
+                      color="red-6"
+                      @click="removeMeasurement(index)"
+                      :disable="!edit"
+                      v-show="edit"
+                    />
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </div>
           </div>
         </q-card>
       </div>
@@ -55,6 +115,9 @@ export default {
             dataCopy: undefined,
             edit: false,
             loading: false,
+            measurement: "",
+            frequency: 1000,
+            rerender: false,
             repository: new Repository("machineModels", this.$http)
         };
     },
@@ -99,6 +162,32 @@ export default {
         enableEdit() {
             this.edit = true;
             this.dataCopy = Object.assign({}, this.data);
+        },
+        addMeasurement() {
+            if (!this.data.measurements) {
+                this.data.measurements = [];
+            }
+            const exist =
+                this.data.measurements
+                    .map(measurement => {
+                        return measurement.name;
+                    })
+                    .indexOf(this.measurement) >= 0
+                    ? true
+                    : false;
+            if (!exist) {
+                this.data.measurements.push({
+                    name: this.measurement,
+                    frequency: this.frequency
+                });
+            }
+            this.measurement = "";
+            this.frequency = 1000;
+        },
+        removeMeasurement(index) {
+            console.log("remove");
+            this.data.measurements.splice(index, 1);
+            this.rerender = !this.rerender;
         }
     }
 };

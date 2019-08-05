@@ -36,6 +36,7 @@ import {
   QMarkupTable,
   QPagination,
   QSelect,
+  QSlider,
   Ripple,
   ClosePopup,
   Loading,
@@ -73,7 +74,8 @@ Vue.use(Quasar, {
     QBreadcrumbsEl,
     QMarkupTable,
     QPagination,
-    QSelect
+    QSelect,
+    QSlider
   },
   directives: {
     Ripple,
