@@ -37,6 +37,7 @@ import {
   QPagination,
   QSelect,
   QSlider,
+  QDialog,
   Ripple,
   ClosePopup,
   Loading,
@@ -75,7 +76,8 @@ Vue.use(Quasar, {
     QMarkupTable,
     QPagination,
     QSelect,
-    QSlider
+    QSlider,
+    QDialog
   },
   directives: {
     Ripple,

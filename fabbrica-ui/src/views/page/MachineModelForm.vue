@@ -78,11 +78,40 @@
                   </q-item-section>
 
                   <q-item-section>
-                    <q-item-label>{{ measurement.name }}</q-item-label>
-                    <q-item-label caption lines="1">{{ measurement.frequency }}</q-item-label>
+                    <q-item-label>{{ measurement.name }} : {{ measurement.frequency }} ms</q-item-label>
+                    <q-item-label
+                      caption
+                      lines="1"
+                      v-for="(field, fIndex) in measurement.fields"
+                      :key="fIndex"
+                    >
+                      {{ field.name }} : {{ field.type }}
+                      <q-btn
+                        flat
+                        outlined
+                        icon="close"
+                        color="red-6"
+                        @click="removeField(index, fIndex)"
+                        :disable="!edit"
+                        v-show="edit"
+                        style="padding: 0px; !important;"
+                        size="xs"
+                      />
+                    </q-item-label>
                   </q-item-section>
 
                   <q-item-section side>
+                    <q-btn
+                      flat
+                      outlined
+                      icon="add"
+                      color="light-blue-6"
+                      @click="addField(index)"
+                      :disable="!edit"
+                      v-show="edit"
+                    />
+                  </q-item-section>
+                  <q-item-section side style="padding-left: 0px !important;">
                     <q-btn
                       flat
                       outlined
@@ -95,6 +124,30 @@
                   </q-item-section>
                 </q-item>
               </q-list>
+              <q-dialog v-model="showAddFieldDialog">
+                <q-card style="width: 300px" class="q-px-sm q-pb-md">
+                  <q-card-section>
+                    <div class="text-h6">Add Field</div>
+                  </q-card-section>
+
+                  <q-input
+                    outlined
+                    v-model="field.name"
+                    label="Field Name"
+                    class="q-mb-sm"
+                    :disable="!edit"
+                  />
+                  <q-select
+                    outlined
+                    v-model="field.type"
+                    :options="fieldTypes"
+                    label="Type"
+                    class="q-mb-sm"
+                  />
+                  <q-btn unelevated color="light-blue-6 q-mr-sm" @click="addFieldConfirm">Add</q-btn>
+                  <q-btn unelevated color="blue-grey-6" @click="addFieldCancel">Cancel</q-btn>
+                </q-card>
+              </q-dialog>
             </div>
           </div>
         </q-card>
@@ -118,6 +171,10 @@ export default {
             measurement: "",
             frequency: 1000,
             rerender: false,
+            showAddFieldDialog: false,
+            field: { name: "", type: "BOOLEAN" },
+            fieldTypes: ["BOOLEAN", "FLOAT", "INTEGER", "STRING", "TIMESTAMP"],
+            addFieldIndex: -1,
             repository: new Repository("machineModels", this.$http)
         };
     },
@@ -187,6 +244,41 @@ export default {
         removeMeasurement(index) {
             console.log("remove");
             this.data.measurements.splice(index, 1);
+            this.rerender = !this.rerender;
+        },
+        addField(index) {
+            this.showAddFieldDialog = true;
+            this.addFieldIndex = index;
+        },
+        addFieldConfirm() {
+            if (!this.data.measurements[this.addFieldIndex].fields) {
+                this.data.measurements[this.addFieldIndex].fields = [];
+            }
+            if (this.field.name != "") {
+                const exist =
+                    this.data.measurements[this.addFieldIndex].fields
+                        .map(field => {
+                            return field.name;
+                        })
+                        .indexOf(this.field.name) >= 0
+                        ? true
+                        : false;
+                if (!exist) {
+                    this.data.measurements[this.addFieldIndex].fields.push(
+                        this.field
+                    );
+                }
+                this.field = { name: "", type: "BOOLEAN" };
+                this.showAddFieldDialog = false;
+                this.addFieldIndex = -1;
+            }
+        },
+        addFieldCancel() {
+            this.showAddFieldDialog = false;
+            this.addFieldIndex = -1;
+        },
+        removeField(mIndex, fIndex) {
+            this.data.measurements[mIndex].fields.splice(fIndex, 1);
             this.rerender = !this.rerender;
         }
     }
