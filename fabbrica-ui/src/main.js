@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueApexCharts from 'vue-apexcharts'
 import _ from 'lodash';
 import App from './App.vue'
 import './quasar'
@@ -10,6 +11,8 @@ import store from './store'
 Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios);
+Vue.use(VueApexCharts);
+Vue.component('apexchart', VueApexCharts);
 
 const accessToken = localStorage.getItem('access_token');
 if (accessToken) {

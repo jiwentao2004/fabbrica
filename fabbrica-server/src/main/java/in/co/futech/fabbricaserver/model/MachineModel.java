@@ -1,6 +1,7 @@
 package in.co.futech.fabbricaserver.model;
 
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -14,6 +15,9 @@ public class MachineModel extends AbstractDocument {
     private String name;
 
     private List<Measurement> measurements;
+
+    @DBRef
+    private List<Visualization> visualizations;
 
     public String getCode() {
         return code;
@@ -37,5 +41,13 @@ public class MachineModel extends AbstractDocument {
 
     public void setMeasurements(List<Measurement> measurements) {
         this.measurements = measurements;
+    }
+
+    public List<Visualization> getVisualizations() {
+        return visualizations;
+    }
+
+    public void setVisualizations(List<Visualization> visualizations) {
+        this.visualizations = visualizations;
     }
 }

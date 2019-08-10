@@ -37,6 +37,8 @@ public class UserDetailService implements UserDetailsService {
                 grantedAuthorities.add(authority);
             }
             UserDetail userDetail = new UserDetail();
+            User user = dbUser.get();
+            user.setTenants(null);
             userDetail.setUser(dbUser.get());
             userDetail.setAuthorities(grantedAuthorities);
             return userDetail;

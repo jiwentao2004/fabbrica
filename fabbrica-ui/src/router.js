@@ -13,6 +13,9 @@ import MachineModel from './views/page/MachineModel.vue'
 import MachineModelForm from './views/page/MachineModelForm.vue'
 import Machine from './views/page/Machine.vue'
 import MachineForm from './views/page/MachineForm.vue'
+import Visualization from './views/page/Visualization.vue'
+import VisualizationForm from './views/page/VisualizationForm.vue'
+import Dashboard from './views/page/Dashboard.vue'
 import store from './store'
 
 
@@ -30,6 +33,21 @@ const router = new Router({
         requiresAuth: true,
       },
       children: [
+        {
+          path: '',
+          name: 'dashboard',
+          component: Dashboard
+        },
+        {
+          path: 'visualizations',
+          name: 'visualizations',
+          component: Visualization
+        },
+        {
+          path: 'visualizations/:id',
+          name: 'visualization-form',
+          component: VisualizationForm
+        },
         {
           path: 'machines',
           name: 'machines',

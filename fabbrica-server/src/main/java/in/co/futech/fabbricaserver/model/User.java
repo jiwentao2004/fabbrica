@@ -1,6 +1,7 @@
 package in.co.futech.fabbricaserver.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,9 +9,12 @@ import java.io.Serializable;
 import java.util.List;
 
 @Document(collection = "users")
-public class User extends AbstractDocument implements Serializable {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 9045392856112990791L;
+
+    @Id
+    private String id;
 
     private String name;
 
@@ -45,6 +49,14 @@ public class User extends AbstractDocument implements Serializable {
         this.isAccountNonLocked = true;
         this.isCredentialsNonExpired = true;
         this.isEnabled = true;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

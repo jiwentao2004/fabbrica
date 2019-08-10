@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import in.co.futech.fabbricaserver.model.Role;
@@ -17,6 +18,7 @@ import in.co.futech.fabbricaserver.model.User;
 import in.co.futech.fabbricaserver.repository.UserRepository;
 
 @SpringBootApplication
+@ComponentScan("in.co.futech.fabbricaserver")
 public class FabbricaServerApplication implements CommandLineRunner {
 
     public static final Logger logger = LoggerFactory.getLogger(FabbricaServerApplication.class);

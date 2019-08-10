@@ -49,6 +49,9 @@ services:
   telegraf:
     image: telegraf
     hostname: telegraf
+    depends_on: 
+      - influxdb
+      - emqx
     links: 
       - influxdb
       - emqx
@@ -70,6 +73,12 @@ services:
     image: fabbrica-server
     volumes: 
       - ${PWD}/fabbrica-server/build/libs:/fabbrica-server
+    depends_on: 
+      - influxdb
+      - mongodb
+    links: 
+      - influxdb
+      - mongodb
     command: >
               java -jar fabbrica-server-0.0.1-SNAPSHOT.jar 
               --spring.data.mongodb.username=${MONGODB_ROOT_USERNAME}
@@ -78,8 +87,14 @@ services:
               --spring.data.mongodb.database=${DATABASE_NAME}
               --spring.data.mongodb.authentication-database=admin
               --spring.data.mongodb.password=${MONGODB_ROOT_PASSWORD}
+              --influx.url=${INFLUXDB_URL}
+              --influx.database=${INFLUXDB_DATABASE}
+              --influx.retention=${INFLUXDB_RETENTION}
+              --influx.username=${INFLUXDB_USERNAME}
+              --influx.password=${INFLUXDB_PASSWORD}
               --oauth.client.id=${OAUTH_CLIENT_ID}
               --oauth.client.secret=${OAUTH_CLIENT_SECRET}
+
 
   fabbrica-ui:
     build: ./fabbrica-ui

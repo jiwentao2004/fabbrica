@@ -9,12 +9,15 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "apexcharts": "^3.8.4",
     "axios": "^0.18.1",
     "core-js": "^2.6.5",
     "lodash": "^4.17.15",
     "quasar": "^1.0.0",
     "query-string": "^6.8.2",
+    "svg.js": "^2.7.1",
     "vue": "^2.6.10",
+    "vue-apexcharts": "^1.4.0",
     "vue-axios": "^2.1.4",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"

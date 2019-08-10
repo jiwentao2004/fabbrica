@@ -1,8 +1,6 @@
 package in.co.futech.fabbricaserver.controller;
 
-import in.co.futech.fabbricaserver.model.Acl;
-import in.co.futech.fabbricaserver.model.Machine;
-import in.co.futech.fabbricaserver.model.User;
+import in.co.futech.fabbricaserver.model.*;
 import in.co.futech.fabbricaserver.repository.AclRepository;
 import in.co.futech.fabbricaserver.repository.MachineRepository;
 import in.co.futech.fabbricaserver.repository.UserRepository;
@@ -93,6 +91,17 @@ public class MachineController {
         return machineRepository.findById(id)
                 .map(machine -> new ResponseEntity<>(machine, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/{id}/visualizations")
+    public ResponseEntity<List<Visualization>> getVisualizations(@PathVariable String id) {
+        Optional<Machine> optionalMachine = machineRepository.findById(id);
+        if(optionalMachine.isPresent()) {
+            return new ResponseEntity<>(optionalMachine.get().getMachineModel().getVisualizations(), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")

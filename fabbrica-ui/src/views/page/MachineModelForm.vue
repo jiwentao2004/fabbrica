@@ -64,7 +64,7 @@
                 bordered
                 separator
                 v-if="data.measurements && data.measurements.length > 0"
-                class="rounded-borders"
+                class="rounded-borders q-mb-sm"
                 v-model="rerender"
               >
                 <q-item
@@ -148,6 +148,73 @@
                   <q-btn unelevated color="blue-grey-6" @click="addFieldCancel">Cancel</q-btn>
                 </q-card>
               </q-dialog>
+              <q-select
+                outlined
+                v-model="selectedVisualization"
+                use-input
+                hide-selected
+                fill-input
+                input-debounce="0"
+                label="Visualization"
+                :options="visualizationOptions"
+                option-label="name"
+                option-value="id"
+                emit-value
+                map-options
+                @filter="visualizationFilter"
+                @input="visualizationInput"
+                :disable="!edit"
+                class="q-mb-sm"
+              >
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                    <q-item-section>
+                      <q-item-label caption>{{scope.opt.code}}</q-item-label>
+                      <q-item-label>{{ scope.opt.name }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">No Visualizations</q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+              <q-list
+                bordered
+                separator
+                v-if="data.visualizations && data.visualizations.length > 0"
+                class="rounded-borders"
+                v-model="rerender"
+              >
+                <q-item
+                  v-for="(visualization, index) in data.visualizations"
+                  :key="index"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-avatar color="primary" text-color="white">{{ visualization.name.charAt(0) }}</q-avatar>
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label>{{ visualization.name }}</q-item-label>
+                    <q-item-label caption lines="1">{{ visualization.code }}</q-item-label>
+                  </q-item-section>
+
+                  <q-item-section side>
+                    <q-btn
+                      flat
+                      outlined
+                      icon="close"
+                      color="red-6"
+                      @click="removeVisualization(index)"
+                      :disable="!edit"
+                      v-show="edit"
+                    />
+                  </q-item-section>
+                </q-item>
+              </q-list>
             </div>
           </div>
         </q-card>
@@ -175,7 +242,13 @@ export default {
             field: { name: "", type: "BOOLEAN" },
             fieldTypes: ["BOOLEAN", "FLOAT", "INTEGER", "STRING", "TIMESTAMP"],
             addFieldIndex: -1,
-            repository: new Repository("machineModels", this.$http)
+            selectedVisualization: {},
+            visualizationOptions: [],
+            repository: new Repository("machineModels", this.$http),
+            visualizationRepository: new Repository(
+                "visualizations",
+                this.$http
+            )
         };
     },
     beforeMount() {
@@ -279,6 +352,49 @@ export default {
         },
         removeField(mIndex, fIndex) {
             this.data.measurements[mIndex].fields.splice(fIndex, 1);
+            this.rerender = !this.rerender;
+        },
+        visualizationFilter(val, update, abort) {
+            let filter = "";
+            if (val) {
+                filter = "name,like," + val + ";";
+            }
+            this.visualizationRepository
+                .getData(filter, 0, 20, "+name")
+                .then(response => {
+                    update(() => {
+                        this.visualizationOptions = response.data;
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                    abort();
+                });
+        },
+        visualizationInput(value) {
+            if (!this.data.visualizations) {
+                this.data.visualizations = [];
+            }
+            const exist =
+                this.data.visualizations
+                    .map(visualization => {
+                        return visualization.id;
+                    })
+                    .indexOf(value) >= 0
+                    ? true
+                    : false;
+            if (!exist) {
+                this.data.visualizations.push(
+                    this.visualizationOptions.filter(visualization => {
+                        return value == visualization.id;
+                    })[0]
+                );
+            }
+            this.selectedVisualization = {};
+        },
+        removeVisualization(index) {
+            console.log("remove");
+            this.data.visualizations.splice(index, 1);
             this.rerender = !this.rerender;
         }
     }
